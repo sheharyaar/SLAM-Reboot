@@ -1,9 +1,20 @@
 # SLAM-Reboot
 A reboot of the SLAM project for playing audio in games
 
-# SLAM
+# What has Changed -
 
-[Download Link For V2 (Modified version)](http://www.mediafire.com/file/8srp5aqdtckxv2a/SLAM-v2.rar/file)
+    - Removed the use of YoutubeExtractor as it has been archived
+    - Added Youtube-dl in place of YoutubeExtractor
+
+    ## Games that has been tested - ##
+
+        - CS:GO
+
+    ## Download Link for V2 ##
+
+        [Download Link For V2 (Modified version)](http://www.mediafire.com/file/8srp5aqdtckxv2a/SLAM-v2.rar/file)
+
+# SLAM
 
 [Source Live Audio Mixer home page](http://slam.flankers.net/)
 
