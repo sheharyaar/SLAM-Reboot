@@ -3,6 +3,8 @@ A reboot of the SLAM project for playing audio in games
 
 # SLAM
 
+[Download Link For V2 (Modified version)](http://www.mediafire.com/file/8srp5aqdtckxv2a/SLAM-v2.rar/file)
+
 [Source Live Audio Mixer home page](http://slam.flankers.net/)
 
 [Twitter](https://twitter.com/SilentFL)
