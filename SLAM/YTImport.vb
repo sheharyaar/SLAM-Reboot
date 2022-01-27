@@ -12,12 +12,12 @@ Public Class YTImport
 
     Private Sub ImportButton_Click(sender As Object, e As EventArgs) Handles ImportButton.Click
         Dim youtubeMatch As Match = New Regex("youtu(?:\.be|be\.com)/(?:.*v(?:/|=)|(?:.*/)?)([a-zA-Z0-9-_]+)").Match(TextBox1.Text)
-        '////This code sends link to the downloader..bass
+        '////This code sends link to the downloader
         If youtubeMatch.Success Then
             TextBox1.Enabled = False
             ImportButton.Enabled = False
             DownloadWorker.RunWorkerAsync("youtube.com/watch?v=" & youtubeMatch.Groups(1).Value)
-            ToolStripStatusLabel1.Text = "Status: Downloading"
+            ToolStripStatusLabel1.Text = "Status: Downloading..."
         Else
             MessageBox.Show("Invalid YouTube URL.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             TextBox1.Enabled = True
@@ -49,20 +49,10 @@ Public Class YTImport
 
             Dim filename As String = ""
 
-            Dim proc As Process = New Process()
-            Dim name As String
-            name = Path.GetFullPath("youtube-dl.exe")
-            proc.StartInfo.FileName = name
-            proc.StartInfo.Arguments = e.Argument & " -o lagnos/%(title)s.%(ext)s --format mp4"
-            proc.StartInfo.UseShellExecute = False
-            proc.StartInfo.RedirectStandardOutput = True
-            proc.StartInfo.CreateNoWindow = True
-            proc.Start()
-            proc.WaitForExit()
-
+            ' Get the name of the video using -e option
             Dim proc2 As Process = New Process()
             Dim name2 As String
-            name2 = Path.GetFullPath("youtube-dl.exe")
+            name2 = Path.GetFullPath("yt-dlp.exe")
             proc2.StartInfo.FileName = name2
             proc2.StartInfo.Arguments = e.Argument & " -e"
             proc2.StartInfo.UseShellExecute = False
@@ -73,8 +63,39 @@ Public Class YTImport
                 filename = proc2.StandardOutput.ReadLine()
             End While
             proc2.WaitForExit()
+
+            'File name exceeding Limit causing errors - shorten yt video name
+
+            filename = filename.Replace("|", "")
+            filename = filename.Replace("<", "")
+            filename = filename.Replace(">", "")
+            filename = filename.Replace(":", "")
+            filename = filename.Replace("\", "")
+            filename = filename.Replace("/", "")
+            filename = filename.Replace(" ", "")
+            filename = filename.Replace("|", "")
+            filename = filename.Replace("?", "")
+            filename = filename.Replace("*", "")
+            filename = filename.Replace("-", "")
+            filename = filename.Replace("*", "")
+
+            ' Make the filename 15 chars long
+            filename = filename.Substring(0, 15)
+
+
+            Dim proc As Process = New Process()
+            Dim name As String
+            name = Path.GetFullPath("yt-dlp.exe")
+            proc.StartInfo.FileName = name
+            proc.StartInfo.Arguments = e.Argument & " -o lagnos\" & filename & ".mp4 --format mp4"
+            proc.StartInfo.UseShellExecute = False
+            proc.StartInfo.RedirectStandardOutput = False
+            proc.StartInfo.CreateNoWindow = False
+            proc.Start()
+            proc.WaitForExit()
+
             e.Result = Path.GetFullPath("lagnos\" & filename & ".mp4")
-            '----------------------------------------
+
 
         Catch ex As Exception
             Form1.LogError(ex)
@@ -82,9 +103,6 @@ Public Class YTImport
         End Try
     End Sub
 
-    Private Sub DownloadWorker_ProgressChanged(sender As Object, e As ProgressChangedEventArgs) Handles DownloadWorker.ProgressChanged
-        ToolStripProgressBar1.Value = e.ProgressPercentage
-    End Sub
 
     Private Sub DownloadWorker_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles DownloadWorker.RunWorkerCompleted
         If TypeOf e.Result Is Exception Then
@@ -107,4 +125,5 @@ Public Class YTImport
     Private Sub DonateLabel_Click(sender As Object, e As EventArgs)
 
     End Sub
+
 End Class

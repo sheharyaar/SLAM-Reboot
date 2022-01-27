@@ -26,7 +26,6 @@ Partial Class YTImport
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.DownloadWorker = New System.ComponentModel.BackgroundWorker()
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.ToolStripProgressBar1 = New System.Windows.Forms.ToolStripProgressBar()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.StatusStrip1.SuspendLayout()
         Me.SuspendLayout()
@@ -58,20 +57,15 @@ Partial Class YTImport
         'ToolStripStatusLabel1
         '
         Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
-        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(383, 20)
+        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(585, 20)
         Me.ToolStripStatusLabel1.Spring = True
         Me.ToolStripStatusLabel1.Text = "Status: Idle"
         Me.ToolStripStatusLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'ToolStripProgressBar1
-        '
-        Me.ToolStripProgressBar1.Name = "ToolStripProgressBar1"
-        Me.ToolStripProgressBar1.Size = New System.Drawing.Size(200, 18)
-        '
         'StatusStrip1
         '
         Me.StatusStrip1.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.ToolStripProgressBar1})
+        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1})
         Me.StatusStrip1.Location = New System.Drawing.Point(0, 53)
         Me.StatusStrip1.Name = "StatusStrip1"
         Me.StatusStrip1.Padding = New System.Windows.Forms.Padding(1, 0, 19, 0)
@@ -104,6 +98,5 @@ Partial Class YTImport
     Friend WithEvents TextBox1 As TextBox
     Friend WithEvents DownloadWorker As System.ComponentModel.BackgroundWorker
     Friend WithEvents ToolStripStatusLabel1 As ToolStripStatusLabel
-    Friend WithEvents ToolStripProgressBar1 As ToolStripProgressBar
     Friend WithEvents StatusStrip1 As StatusStrip
 End Class
