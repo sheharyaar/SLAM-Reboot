@@ -4,7 +4,7 @@ A reboot of the SLAM project for playing audio in games
 # What has Changed -
 
     - Removed the use of YoutubeExtractor as it has been archived
-    - Added Youtube-dl in place of YoutubeExtractor
+    - Added yt-dlp in place of YoutubeExtractor
 
 ## Games that has been tested - ##
 
