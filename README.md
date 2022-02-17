@@ -12,7 +12,7 @@ A reboot of the SLAM project for playing audio in games
 
 ## Download Link for V2 ##
 
-Download `SLAM-v2.zip` file in the [Releases Section here](https://github.com/sheharyaar/SLAM-Reboot/releases/download/latest/SLAM-v2.zip). Extract it to any drive and enjoy!
+Download `SLAM-v2-01.zip` file in the [Releases Section here](https://github.com/sheharyaar/SLAM-Reboot/releases/download/v2.01/SLAM-v2-01.zip). Extract it to any drive and enjoy!
 
 
 # SLAM
