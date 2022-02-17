@@ -12,14 +12,16 @@ Public Class YTImport
 
     Private Sub ImportButton_Click(sender As Object, e As EventArgs) Handles ImportButton.Click
         Dim youtubeMatch As Match = New Regex("youtu(?:\.be|be\.com)/(?:.*v(?:/|=)|(?:.*/)?)([a-zA-Z0-9-_]+)").Match(TextBox1.Text)
+        Dim fileName As Match = New Regex("[a-zA-Z0-9-]+").Match(TextBox2.Text)
+
         '////This code sends link to the downloader
-        If youtubeMatch.Success Then
+        If youtubeMatch.Success And fileName.Success Then
             TextBox1.Enabled = False
             ImportButton.Enabled = False
             DownloadWorker.RunWorkerAsync("youtube.com/watch?v=" & youtubeMatch.Groups(1).Value)
             ToolStripStatusLabel1.Text = "Status: Downloading..."
         Else
-            MessageBox.Show("Invalid YouTube URL.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Invalid YouTube URL or Invalid File Name.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             TextBox1.Enabled = True
             ImportButton.Enabled = True
         End If
@@ -27,60 +29,21 @@ Public Class YTImport
 
     Private Sub DownloadWorker_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles DownloadWorker.DoWork
         Try
-            'Dim videoInfos As IEnumerable(Of VideoInfo) = DownloadUrlResolver.GetDownloadUrls(e.Argument).OrderBy(Function(vid) vid.Resolution)
-
-            '////To understand this part-----------------------
-            'Dim video As VideoInfo = videoInfos.First(Function(info) info.AdaptiveType = AdaptiveType.Audio AndAlso info.AudioType = AudioType.Aac OrElse info.AdaptiveType = AdaptiveType.None AndAlso info.VideoType = VideoType.Mp4 AndAlso info.AudioBitrate >= 128)
-            'If IsNothing(video) Then
-            '    If videoInfos.Any(Function(info) info.AdaptiveType = AdaptiveType.None AndAlso info.VideoType = VideoType.Mp4) Then
-            '        video = videoInfos.First(Function(info) info.AdaptiveType = AdaptiveType.None AndAlso info.VideoType = VideoType.Mp4)
-            '    Else
-            '        Throw New System.Exception("Could not find download.")
-            '    End If
-            'End If
-
-            'If video.RequiresDecryption Then
-            '    DownloadUrlResolver.DecryptDownloadUrl(video)
-            'End If
 
             If Not Directory.Exists(Path.GetFullPath("lagnos\")) Then
                 Directory.CreateDirectory(Path.GetFullPath("lagnos\"))
             End If
 
-            Dim filename As String = ""
+            Dim filename As String = TextBox2.Text
 
-            ' Get the name of the video using -e option
-            Dim proc2 As Process = New Process()
-            Dim name2 As String
-            name2 = Path.GetFullPath("yt-dlp.exe")
-            proc2.StartInfo.FileName = name2
-            proc2.StartInfo.Arguments = e.Argument & " -e"
-            proc2.StartInfo.UseShellExecute = False
-            proc2.StartInfo.RedirectStandardOutput = True
-            proc2.StartInfo.CreateNoWindow = True
-            proc2.Start()
-            While proc2.StandardOutput.EndOfStream = False
-                filename = proc2.StandardOutput.ReadLine()
-            End While
-            proc2.WaitForExit()
-
-            'File name exceeding Limit causing errors - shorten yt video name
-
-            filename = filename.Replace("|", "")
-            filename = filename.Replace("<", "")
-            filename = filename.Replace(">", "")
-            filename = filename.Replace(":", "")
-            filename = filename.Replace("\", "")
-            filename = filename.Replace("/", "")
+            'Remove special characters from video name
+            Regex.Replace(filename, "[^\w-_]", "")
             filename = filename.Replace(" ", "")
-            filename = filename.Replace("|", "")
-            filename = filename.Replace("?", "")
-            filename = filename.Replace("*", "")
-            filename = filename.Replace("-", "")
-            filename = filename.Replace("*", "")
 
             ' Make the filename 15 chars long
-            filename = filename.Substring(0, 15)
+            If filename.Length > 20 Then
+                filename = filename.Substring(0, 20)
+            End If
 
 
             Dim proc As Process = New Process()
@@ -116,14 +79,6 @@ Public Class YTImport
 
     Private Sub YTImport_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         TextBox1.Select()
-    End Sub
-
-    Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles TextBox1.TextChanged
-
-    End Sub
-
-    Private Sub DonateLabel_Click(sender As Object, e As EventArgs)
-
     End Sub
 
 End Class
